@@ -8,12 +8,12 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 dt = 0
-imp = pygame.image.load("C:\\Users\\noahj\\OneDrive\\Pictures\\little guy.png").convert()
-imp_1 = pygame.image.load("C:\\Users\\noahj\\OneDrive\\Pictures\\leaf.png").convert()
+imp = pygame.image.load("little guy.png").convert()
+imp_1 = pygame.image.load("leaf.png").convert()
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 rect_1 = pygame.Rect(random.randint(0,500), random.randint(0,500), 60, 60)
-
+game_over = False
 energy = 1.0
 health = 1.0
 
@@ -40,7 +40,7 @@ while running:
     if player_rect.colliderect(rect_1)and health >= 0:
         health -= dt/5
         if (health < 0):
-            health = 0
+            game_over = True
         if player_pos.x < rect_1.x and player_pos.y < rect_1.y:
             down = False
             right = False
@@ -55,8 +55,10 @@ while running:
             up = False
     if not player_rect.colliderect(rect_1) and health < 1:
         health += dt/30
-
-        
+    if game_over:
+        screen.fill("black")
+        pygame.display.flip()
+        continue       
 
     keys = pygame.key.get_pressed()
     speed = 300
