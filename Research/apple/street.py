@@ -9,7 +9,7 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 imp = pygame.image.load("little guy.png").convert()
-imp_1 = pygame.image.load("leaf.png").convert()
+imp_1 = pygame.image.load("leaf1.png").convert()
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 rect_1 = pygame.Rect(random.randint(0,500), random.randint(0,500), 60, 60)
@@ -30,9 +30,10 @@ while running:
     player_rect = pygame.Rect(player_pos, imp.get_size())
     screen.blit(imp, (player_pos))
     screen.blit(imp_1, (rect_1))
-    pygame.draw.rect(screen, "green", pygame.Rect(0,0, 80 * energy, 20))
-    pygame.draw.rect(screen, "red", pygame.Rect(80 * energy,0, 80 * (1 - energy), 20))
-    pygame.draw.rect(screen, "red", pygame.Rect(1200, 0, 80 * health, 20))
+    pygame.draw.rect(screen, "yellow", pygame.Rect(0,0, 640 * energy, 20))
+    pygame.draw.rect(screen, "red", pygame.Rect(640 * energy,0, 640 * (1 - energy), 20))
+    pygame.draw.rect(screen, "green", pygame.Rect(640, 0, 640 * health, 20))
+    pygame.draw.rect(screen, "red", pygame.Rect(640 + 640 * health,0, 640 * (1 - health), 20))
     up = True
     down = True
     left = True
