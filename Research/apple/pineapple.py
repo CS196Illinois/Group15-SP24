@@ -5,6 +5,9 @@ class Player(object):
         self.pos = pos
         self.speed = speed
         self.img = img
+        self.wall_top_img = pygame.image.load("wall_top.png").convert()
+        self.wall_left_img = pygame.image.load("wall left.png").convert()
+        self.wall_bottom_img = pygame.image.load("wall bottom.png").convert()
         self.health = 1.0
         self.energy = 1.0
     def draw(self, screen):
@@ -25,7 +28,7 @@ class Player(object):
         if keys[pygame.K_d] and directions["right"]:
             self.pos.x += speed * dt
     def collisions(self, obstacles, player_rect, dt, directions, game_over, screen):
-        if self.pos.y <= 60:
+        if self.pos.y <= 100:
             directions["up"] = False
         if self.pos.y >= 620:
             directions["down"] = False
@@ -58,7 +61,7 @@ class Player(object):
         pygame.draw.rect(screen, "green", pygame.Rect(640, 0, 640 * self.health, 20))
         pygame.draw.rect(screen, "red", pygame.Rect(640 + 640 * self.health,0, 640 * (1 - self.health), 20))
     def walls(self, screen, wall_top, wall_bottom, wall_left, wall_right):
-        pygame.draw.rect(screen, "gray", wall_top)
-        pygame.draw.rect(screen, "gray", wall_right)
-        pygame.draw.rect(screen, "gray", wall_left)
-        pygame.draw.rect(screen, "gray", wall_bottom)
+        screen.blit(self.wall_bottom_img, wall_top)
+        screen.blit(self.wall_left_img, wall_right)
+        screen.blit(self.wall_left_img, wall_left)
+        screen.blit(self.wall_top_img, wall_bottom)

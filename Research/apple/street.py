@@ -12,10 +12,10 @@ dt = 0
 imp = pygame.image.load("little guy.png").convert()
 imp_1 = pygame.image.load("leaf1.png").convert()
 
-wall_top = pygame.Rect(0,20, screen.get_width(), 40)
-wall_right = pygame.Rect(1240,20, 40, 700)
+wall_top = pygame.Rect(0,40, 40, 580)
+wall_right = pygame.Rect(1240,40, 40, 700)
 wall_left = pygame.Rect(0,20 , 40, 700)
-wall_bottom = pygame.Rect(0, 680, screen.get_width(), 40)
+wall_bottom = pygame.Rect(0, 680, 1280, 40)
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 obstacles = []
 for _ in range(1):
