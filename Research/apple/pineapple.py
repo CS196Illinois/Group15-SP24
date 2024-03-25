@@ -27,30 +27,32 @@ class Player(object):
             self.pos.x -= speed * dt
         if keys[pygame.K_d] and directions["right"]:
             self.pos.x += speed * dt
-    def collisions(self, obstacles, player_rect, dt, directions, game_over, screen):
+    def collisions(self, obstacles, player_rect, dt, directions, game_over, cash_1, money,screen):
         if self.pos.y <= 100:
             directions["up"] = False
-        if self.pos.y >= 620:
+            if (cash_1.x > 600 and cash_1.x < 660) and (cash_1.y > 320 and cash_1.y < 380) and self.pos.x >= 561 and self.pos.x <= 625:
+                directions["up"] = True
+        if self.pos.y >= 580:
             directions["down"] = False
         if self.pos.x <= 40:
             directions["left"] = False
-        if self.pos.x >= 1180:
+        if self.pos.x >= 1140:
             directions["right"] = False
         for obstacle in obstacles:
-            if player_rect.colliderect(obstacle) and self.health >= 0:
-                self.health -= dt/5
+            if (player_rect.colliderect(obstacle) or player_rect.colliderect(cash_1)) and self.health >= 0:
+                self.health -= dt/1000
                 if (self.health < 0):
                     game_over = True
-                if self.pos.x < obstacle.x and self.pos.y < obstacle.y:
+                if (self.pos.x < obstacle.x and self.pos.y < obstacle.y) or (self.pos.x < cash_1.x and self.pos.y < cash_1.y):
                     directions["down"] = False
                     directions["right"] = False
-                if self.pos.x >= obstacle.x and self.pos.y < obstacle.y:
+                if (self.pos.x >= obstacle.x and self.pos.y < obstacle.y) or (self.pos.x >= cash_1.x and self.pos.y < cash_1.y):
                     directions["down"] = False
                     directions["left"] = False
-                if self.pos.x < obstacle.x and self.pos.y >= obstacle.y:
+                if (self.pos.x < obstacle.x and self.pos.y >= obstacle.y) or (self.pos.x < cash_1.x and self.pos.y >= cash_1.y):
                     directions["right"] = False
                     directions["up"] = False
-                if self.pos.x >= obstacle.x and self.pos.y >= obstacle.y:
+                if (self.pos.x >= obstacle.x and self.pos.y >= obstacle.y) or (self.pos.x >= cash_1.x and self.pos.y >= cash_1.y):
                     directions["left"] = False
                     directions["up"] = False
             if not player_rect.colliderect(obstacle) and self.health < 1:
@@ -61,7 +63,7 @@ class Player(object):
         pygame.draw.rect(screen, "green", pygame.Rect(640, 0, 640 * self.health, 20))
         pygame.draw.rect(screen, "red", pygame.Rect(640 + 640 * self.health,0, 640 * (1 - self.health), 20))
     def walls(self, screen, wall_top, wall_bottom, wall_left, wall_right):
-        screen.blit(self.wall_bottom_img, wall_top)
+        screen.blit(self.wall_bottom_img, wall_bottom)
         screen.blit(self.wall_left_img, wall_right)
         screen.blit(self.wall_left_img, wall_left)
-        screen.blit(self.wall_top_img, wall_bottom)
+        screen.blit(self.wall_top_img, wall_top)
