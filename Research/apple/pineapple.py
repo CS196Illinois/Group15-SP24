@@ -30,7 +30,7 @@ class Player(object):
     def collisions(self, obstacles, player_rect, dt, directions, game_over, cash_1, money,screen):
         if self.pos.y <= 100:
             directions["up"] = False
-            if (cash_1.x > 600 and cash_1.x < 660) and (cash_1.y > 320 and cash_1.y < 380) and self.pos.x >= 561 and self.pos.x <= 625:
+            if ((cash_1.x + 25) > 600 and (cash_1.x +25) < 660) and ((cash_1.y + 25) > 320 and (cash_1.y + 25)< 380) and self.pos.x >= 561 and self.pos.x <= 625:
                 directions["up"] = True
         if self.pos.y >= 580:
             directions["down"] = False

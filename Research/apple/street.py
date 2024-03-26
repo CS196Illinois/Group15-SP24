@@ -28,7 +28,7 @@ game_over = False
 health = 1.0
 money = 0.0
 player = Player(player_pos, 300, imp)
-cash_1 = pygame.Rect(random.randint(40,1000), random.randint(100,620), 50, 50)
+cash_1 = pygame.Rect(random.randint(200,1000), random.randint(250,570), 50, 50)
 time_1 = time()
 
 while running:
@@ -59,13 +59,13 @@ while running:
       shove = 1
       if keys[pygame.K_LSHIFT] and player.energy > 0 and moving:
         shove = 10
-      if keys[pygame.K_d] and (player.pos.x < cash_1.x and player.pos.y >= cash_1.y):
+      if keys[pygame.K_d] and (player.pos.x < cash_1.x):
         cash_1.x += shove
-      if keys[pygame.K_w] and (player.pos.x < cash_1.x and player.pos.y >= cash_1.y):
+      if keys[pygame.K_w] and (player.pos.y >= cash_1.y):
         cash_1.y -= shove
-      if keys[pygame.K_s] and (player.pos.x < cash_1.x and player.pos.y < cash_1.y):
+      if keys[pygame.K_s] and (player.pos.y < cash_1.y):
         cash_1.y += shove
-      if keys[pygame.K_a] and (player.pos.x >= cash_1.x and player.pos.y < cash_1.y):
+      if keys[pygame.K_a] and (player.pos.x >= cash_1.x):
         cash_1.x -= shove
       money += 1
     if player.pos.y <= 0 and not respawning:
@@ -80,12 +80,21 @@ while running:
       rect_1.x = random.randint(40,1000)
       rect_1.y = random.randint(100,620)
       money = 0
-      cash_1.x = random.randint(40,1000)
-      cash_1.y = random.randint(100,620)
+      cash_1.x = random.randint(200,1000)
+      cash_1.y = random.randint(250,570)
       player.energy = 1
       player.health = 1
+      money += 1
     if time() >= time_1 + 1:
       respawning = False
+    if cash_1.x <= 40:
+      cash_1.x = random.randint(200,1000)
+    if (cash_1.x + 50 >= 1240):
+      cash_1.x = random.randint(200,1000)
+    if (cash_1.y <= 120):
+      cash_1.y = random.randint(250,570)
+    if ((cash_1.y + 50) >= 680):
+      cash_1.y = random.randint(250,570)
     player.collisions(obstacles, player_rect, dt, directions, game_over, cash_1, money, screen)
     if player.health < 0:
         screen.fill("black")
