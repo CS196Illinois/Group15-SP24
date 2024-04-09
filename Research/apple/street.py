@@ -30,6 +30,9 @@ money = 0.0
 player = Player(player_pos, 300, imp)
 cash_1 = pygame.Rect(random.randint(200,1000), random.randint(250,570), 50, 50)
 time_1 = time()
+image_surface = pygame.image.load('little guy.png').convert_alpha()
+mask1 = pygame.mask.from_surface(image_surface)
+outline = mask1.outline()
 
 while running:
     # poll for events
@@ -41,10 +44,11 @@ while running:
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("white")
     player_rect = pygame.Rect(player.pos, imp.get_size())
-    #screen.blit(imp, (player.pos))
-    screen.blit(imp_cash, cash_1)
-    player.draw(screen)
+    screen.blit(imp, (player.pos), special_flags=pygame.BLEND_RGBA_MIN)
     pygame.draw.rect(screen, "blue", music)
+    screen.blit(imp_cash, cash_1,special_flags=pygame.BLEND_RGBA_MIN)
+    pygame.draw.lines(image_surface, "black", True, outline)
+    #player.draw(screen)
     player.walls(screen, wall_top, wall_bottom, wall_left, wall_right)
     for obstacle in obstacles:
       screen.blit(imp_1, (obstacle))
@@ -55,19 +59,7 @@ while running:
     "left" : True,
     "right" : True,
     }
-    if player_rect.colliderect(cash_1):
-      shove = 1
-      if keys[pygame.K_LSHIFT] and player.energy > 0 and moving:
-        shove = 10
-      if keys[pygame.K_d] and (player.pos.x < cash_1.x):
-        cash_1.x += shove
-      if keys[pygame.K_w] and (player.pos.y >= cash_1.y):
-        cash_1.y -= shove
-      if keys[pygame.K_s] and (player.pos.y < cash_1.y):
-        cash_1.y += shove
-      if keys[pygame.K_a] and (player.pos.x >= cash_1.x):
-        cash_1.x -= shove
-      money += 1
+   
     if player.pos.y <= 0 and not respawning:
       respawning = True
       time_1 = time()
@@ -79,7 +71,6 @@ while running:
       player.pos.y = screen.get_height() / 2
       rect_1.x = random.randint(40,1000)
       rect_1.y = random.randint(100,620)
-      money = 0
       cash_1.x = random.randint(200,1000)
       cash_1.y = random.randint(250,570)
       player.energy = 1
@@ -104,6 +95,7 @@ while running:
     keys = pygame.key.get_pressed()
     moving = keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]
     player.move(keys, dt, directions, moving)
+    player.push(screen, cash_1, keys, player_rect, moving)
     player.pos.x = player.pos.x % screen.get_width()
     # flip() the display to put your work on screen
     pygame.display.flip()
